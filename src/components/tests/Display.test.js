@@ -1,17 +1,43 @@
+import React from "react";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import App from "../../App";
+import Display from "../Display";
 
+import fetchShow from "../../api/fetchShow";
+jest.mock("../../api/fetchShow");
 
+const testShow = {
+  name: "fake show",
+  image: null,
+  summary: "fake summary",
+  seasons: [
+    { id: 1, name: "season 1", episodes: [] },
+    { id: 2, name: "season 2", episodes: [] },
+  ],
+};
 
+test("render Display without any props", () => {
+  render(<Display />);
+});
 
+test("when the fetch button is pressed, the show component will display", async () => {
+  fetchShow.mockResolvedValueOnce(testShow);
+  render(<Display />);
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+  const show = await screen.findByTestId("show-container");
+  expect(show).toBeInTheDocument();
+});
 
-
-
-
-
-
-
-
-
-
+test("when the fetch button is pressed, the amount of select options rendered is equal to the amount of seasons in your test data", async () => {
+  fetchShow.mockResolvedValueOnce(testShow);
+  render(<Display />);
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+  const options = await screen.findByRole("combobox");
+  expect(options).toHaveLength(3);
+});
 
 ///Tasks:
 //1. Add in nessisary imports and values to establish the testing suite.
