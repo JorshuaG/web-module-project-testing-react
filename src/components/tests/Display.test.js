@@ -1,5 +1,5 @@
 import React from "react";
-import { screen, render } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../App";
 import Display from "../Display";
@@ -37,6 +37,17 @@ test("when the fetch button is pressed, the amount of select options rendered is
   userEvent.click(button);
   const options = await screen.findByRole("combobox");
   expect(options).toHaveLength(3);
+});
+
+test("test when fetch button is pressed, function called", async () => {
+  const displayFunction = jest.fn();
+  fetchShow.mockResolvedValueOnce(testShow);
+  render(<Display displayFunc={displayFunction} />);
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+  await waitFor(() => {
+    expect(displayFunction).toBeCalledTimes(1);
+  });
 });
 
 ///Tasks:

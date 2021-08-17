@@ -12,8 +12,6 @@ const testShow = {
     { id: 1, name: "season 1", episodes: [] },
     { id: 2, name: "season 2", episodes: [] },
   ],
-
-  //add in approprate test data structure here.
 };
 
 test("renders testShow and no selected Season without errors", () => {
